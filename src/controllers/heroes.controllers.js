@@ -34,3 +34,14 @@ async function getHeroByParam(req, res) {
         res.json({ error: error.message });
     }
 }
+
+async function creteHero(req, res) {
+    const { nome, bencaodivina, forca, resistencia, velocidade, bencaooumaldicaoo, equipamento } = req.body;
+    try {
+        const result = await pool.query('INSERT INTO herois (nome, bencaodivina, forca, resistencia, velocidade, bencaooumaldicaoo, equipamento) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *', [nome, bencaodivina, forca, resistencia, velocidade, bencaooumaldicaoo, equipamento]);
+        res.json(result.rows[0]);
+    } catch (error) {
+        console.error('Error executing query', error);
+        res.json({ error: error.message });
+    }
+}
