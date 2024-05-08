@@ -35,7 +35,7 @@ async function getHeroByParam(req, res) {
     }
 }
 
-async function creteHero(req, res) {
+async function createHero(req, res) {
     const { nome, bencaodivina, forca, resistencia, velocidade, bencaooumaldicaoo, equipamento } = req.body;
     try {
         const result = await pool.query('INSERT INTO herois (nome, bencaodivina, forca, resistencia, velocidade, bencaooumaldicaoo, equipamento) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *', [nome, bencaodivina, forca, resistencia, velocidade, bencaooumaldicaoo, equipamento]);
@@ -68,3 +68,5 @@ async function deleteHero(req, res) {
         res.json({ error: error.message });
     }
 }
+
+module.exports = { getAllHeros, getHeroByParam, createHero, updateHero, deleteHero };
