@@ -96,3 +96,5 @@ async function getAllBattleByHeroName(req, res) {
         res.json({ error: error.message });
     }
 }
+
+module.exports = { postBattle, getAllBattle, getAllBattleByHeroName };
