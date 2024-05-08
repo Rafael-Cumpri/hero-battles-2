@@ -45,3 +45,15 @@ async function creteHero(req, res) {
         res.json({ error: error.message });
     }
 }
+
+async function updateHero(req, res) {
+    const { id } = req.params;
+    const { nome, bencaodivina, forca, resistencia, velocidade, bencaooumaldicaoo, equipamento } = req.body;
+    try {
+        const result = await pool.query('UPDATE herois SET nome = $1, bencaodivina = $2, forca = $3, resistencia = $4, velocidade = $5, bencaooumaldicaoo = $6, equipamento = $7 WHERE id = $8 RETURNING *', [nome, bencaodivina, forca, resistencia, velocidade, bencaooumaldicaoo, equipamento, id]);
+        res.json(result.rows[0]);
+    } catch (error) {
+        console.error('Error executing query', error);
+        res.json({ error: error.message });
+    }
+}
