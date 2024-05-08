@@ -41,3 +41,58 @@ async function postBattle(req, res) {
         res.json({ error: error.message });
     }   
 }
+
+async function getAllBattle(req, res) {
+    try {
+        const result = await pool.query('SELECT batalhas.id, batalhas.heroi_id1, batalhas.heroi_id2, batalhas.vencedor_id, herois.nome, herois.bencaodivina, herois.forca, herois.resistencia, herois.velocidade, herois.bencaooumaldicaoo, herois.equipamento FROM batalhas JOIN herois ON batalhas.vencedor_id = herois.id');
+        res.json({
+            total : result.rowCount,
+            battles : result.rows.map(row => ({
+                id: row.id,
+                heroi_id1: row.heroi_id1,
+                heroi_id2: row.heroi_id2,
+                vencedor_id: row.vencedor_id,
+                winnerDetails: {
+                    nome: row.nome,
+                    bencaodivina: row.bencaodivina,
+                    forca: row.forca,
+                    resistencia: row.resistencia,
+                    velocidade: row.velocidade,
+                    bencaooumaldicaoo: row.bencaooumaldicaoo,
+                    equipamento: row.equipamento
+                }
+            }))
+        });
+    } catch (error) {
+        console.error('Error executing query', error);
+        res.json({ error: error.message });
+    }
+}
+
+async function getAllBattleByHeroName(req, res) {
+    const { heroname } = req.params;
+    try {
+        const result = await pool.query('SELECT batalhas.id, batalhas.heroi_id1, batalhas.heroi_id2, batalhas.vencedor_id, herois.nome, herois.bencaodivina, herois.forca, herois.resistencia, herois.velocidade, herois.bencaooumaldicaoo, herois.equipamento FROM batalhas JOIN herois ON batalhas.vencedor_id = herois.id WHERE herois.nome Like $1', [`%${heroname}%`]);
+        res.json({
+            total : result.rowCount,
+            battles : result.rows.map(row => ({
+                id: row.id,
+                heroi_id1: row.heroi_id1,
+                heroi_id2: row.heroi_id2,
+                vencedor_id: row.vencedor_id,
+                winnerDetails: {
+                    nome: row.nome,
+                    bencaodivina: row.bencaodivina,
+                    forca: row.forca,
+                    resistencia: row.resistencia,
+                    velocidade: row.velocidade,
+                    bencaooumaldicaoo: row.bencaooumaldicaoo,
+                    equipamento: row.equipamento
+                }
+            })
+        )});
+    } catch (error) {
+        console.error('Error executing query', error);
+        res.json({ error: error.message });
+    }
+}
