@@ -1,5 +1,31 @@
 const pool = require('../config/dbconfig')
 
+const bencaosdivina = [
+    { name: 'Zeus', versusBonus: ['Apolo', 'Hermes', 'Hades'] },
+    { name: 'Apolo', versusBonus: ['Ares','Hades','Hefesto'] },
+    { name: 'Hermes', versusBonus: ['Apolo','Atena','Hefesto'] },
+    { name: 'Ares', versusBonus: ['Zeus','Hades','Hermes'] },
+    { name: 'Hades', versusBonus: ['Poseidon','Atena','Hermes'] },
+    { name: 'Atena', versusBonus: ['Poseidon','Zeus','Ares'] },
+    { name: 'Poseidon', versusBonus: ['Zeus','Apolo','Hermes'] },
+    { name: 'Hefesto', versusBonus: ['Zeus','Ares','Atena'] }
+];
+
+const giveadvantage = (hero1, hero2) => {
+    const bencao1 = hero1.bencaodivina;
+    const bencao2 = hero2.bencaodivina;
+    const bencao1bonus = bencaosdivina.find(b => b.name === bencao1).versusBonus;
+    const bencao2bonus = bencaosdivina.find(b => b.name === bencao2).versusBonus;
+
+    if (bencao1bonus.includes(bencao2)) {
+        return hero1;
+    } else if (bencao2bonus.includes(bencao1)) {
+        return hero2;
+    } else {
+        return null;
+    }
+}
+
 async function postBattle(req, res) {
     const { id1, id2 } = req.params;
     try {
