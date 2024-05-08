@@ -57,3 +57,14 @@ async function updateHero(req, res) {
         res.json({ error: error.message });
     }
 }
+
+async function deleteHero(req, res) {
+    const { id } = req.params;
+    try {
+        const result = await pool.query('DELETE FROM herois WHERE id = $1', [id]);
+        res.json({ message: 'Hero deleted successfully' });
+    } catch (error) {
+        console.error('Error executing query', error);
+        res.json({ error: error.message });
+    }
+}
