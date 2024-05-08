@@ -1,4 +1,4 @@
-const poll = require('../config/dbconfig')
+const pool = require('../config/dbconfig')
 
 async function getAllHeros(req, res) {
     try {
